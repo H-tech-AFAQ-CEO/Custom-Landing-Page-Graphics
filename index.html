@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Trade — Guaranteed Protection for Every Deal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- GSAP + ScrollTrigger for premium scroll animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Splitting.js for text animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Splitting/1.0.6/splitting.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Splitting/1.0.6/splitting.min.css">
+    <!-- CountUp.js for animated numbers -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js"></script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+        :root {
+            --ink: #07090f;
+            --ink-2: #0f1219;
+            --ink-3: #161b27;
+            --surface: #f4f5f8;
+            --white: #ffffff;
+            --accent: #1a6fff;
+            --accent-2: #00d4aa;
+            --accent-3: #7b5ea7;
+            --gold: #c9a84c;
+            --red: #e84040;
+            --border: rgba(255,255,255,0.07);
+            --border-light: rgba(255,255,255,0.12);
+            --glow: rgba(26,111,255,0.18);
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --nav-h: 72px;
+        }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--ink);
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+            cursor: none;
+        }
+
+        /* ─── CUSTOM CURSOR ─────────────────────────────── */
+        #cursor-dot {
+            position: fixed; top: 0; left: 0;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent-2); pointer-events: none;
+            z-index: 9999; transform: translate(-50%,-50%);
+            transition: background .2s, width .2s, height .2s;
+        }
+        #cursor-ring {
+            position: fixed; top: 0; left: 0;
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 1.5px solid rgba(26,111,255,.5); pointer-events: none;
+            z-index: 9998; transform: translate(-50%,-50%);
+            transition: width .3s, height .3s, border-color .3s;
+        }
+        body:has(a:hover) #cursor-dot { width: 14px; height: 14px; background: var(--accent); }
+        body:has(a:hover) #cursor-ring { width: 50px; height: 50px; border-color: rgba(26,111,255,.8); }
+
+        @media (pointer: coarse) {
+            #cursor-dot, #cursor-ring { display: none; }
+            body { cursor: auto; }
+        }
+
+        /* ─── NAV ───────────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 0 clamp(1rem, 4%, 3rem);
+            background: rgba(7,9,15,.88);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border-bottom: 1px solid var(--border);
+            height: var(--nav-h);
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background .4s, border-color .4s;
+        }
+        nav.scrolled { background: rgba(7,9,15,.97); border-color: rgba(255,255,255,.1); }
+
+        .nav-logo {
+            display: flex; align-items: center; height: var(--nav-h);
+            text-decoration: none;
+        }
+        .nav-logo img {
+            height: 52px; width: auto;
+            max-width: 200px; object-fit: contain;
+            filter: brightness(1.1);
+        }
+        .nav-logo-fallback {
+            font-family: var(--font-display); font-weight: 800; font-size: 1.3rem;
+            color: var(--white); letter-spacing: -.02em;
+        }
+        .nav-logo-fallback span { color: var(--accent); }
+
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: rgba(255,255,255,.55);
+            font-size: .875rem; font-weight: 500; letter-spacing: .01em;
+            transition: color .2s; position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+            height: 1px; background: var(--accent); transform: scaleX(0);
+            transition: transform .25s;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a:hover::after { transform: scaleX(1); }
+
+        .nav-cta {
+            background: var(--accent); color: var(--white) !important;
+            padding: .5rem 1.25rem; border-radius: 8px;
+            font-size: .875rem; font-weight: 600; text-decoration: none;
+            letter-spacing: .01em; transition: background .2s, transform .15s, box-shadow .2s;
+            box-shadow: 0 0 0 0 rgba(26,111,255,0);
+        }
+        .nav-cta:hover {
+            background: #1560e8; transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(26,111,255,.4);
+        }
+        .nav-cta::after { display: none; }
+
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 4px; background: none; border: none;
+        }
+        .hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: rgba(255,255,255,.7); border-radius: 2px;
+            transition: transform .3s, opacity .3s, background .3s;
+        }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        .mobile-menu {
+            display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+            background: rgba(7,9,15,.98); backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border); z-index: 99;
+            padding: 1.5rem clamp(1rem,5%,3rem); flex-direction: column; gap: 1rem;
+            transform: translateY(-10px); opacity: 0;
+            transition: transform .3s, opacity .3s;
+        }
+        .mobile-menu.open { display: flex; transform: translateY(0); opacity: 1; }
+        .mobile-menu a {
+            text-decoration: none; color: rgba(255,255,255,.7);
+            font-size: 1rem; font-weight: 500; padding: .5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .mobile-menu .nav-cta { text-align: center; margin-top: .5rem; border-bottom: none; }
+
+        /* ─── SECTIONS ──────────────────────────────────── */
+        .section-inner {
+            width: 100%; max-width: 1200px;
+            margin: 0 auto; padding: 0 clamp(1rem,5%,3rem);
+        }
+
+        /* ─── HERO ──────────────────────────────────────── */
+        .hero-wrap {
+            width: 100%; background: var(--ink);
+            padding-top: var(--nav-h); overflow: hidden; position: relative;
+        }
+
+        /* animated grain overlay */
+        .hero-wrap::before {
+            content: ''; position: absolute; inset: 0; z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: .5; pointer-events: none;
+        }
+
+        .hero-bg-gradient {
+            position: absolute; inset: 0; z-index: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 70% 30%, rgba(26,111,255,.12) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 20% 70%, rgba(0,212,170,.07) 0%, transparent 60%),
+                linear-gradient(160deg, #0d1120 0%, #07090f 50%, #0e1525 100%);
+        }
+
+        .hero-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem,5vw,5rem); align-items: center;
+            min-height: calc(100svh - var(--nav-h));
+            max-width: 1200px; margin: 0 auto;
+            padding: clamp(3rem,8vw,6rem) clamp(1rem,5%,3rem);
+            position: relative; z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: .5rem;
+            background: rgba(26,111,255,.1); border: 1px solid rgba(26,111,255,.28);
+            border-radius: 100px; padding: .35rem .9rem;
+            font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem;
+            opacity: 0; /* animated in */
+        }
+        .badge-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent-2); animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(.7); }
+        }
+
+        .hero-h1 {
+            font-family: var(--font-display); font-weight: 800;
+            font-size: clamp(2.6rem, 5.5vw, 4.5rem);
+            line-height: 1.03; letter-spacing: -.035em; color: var(--white);
+            margin-bottom: 1.25rem; opacity: 0;
+        }
+        .hero-h1 .word { display: inline-block; overflow: hidden; }
+        .hero-h1 .char { display: inline-block; }
+        .hero-h1 span {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: clamp(.95rem,1.5vw,1.1rem); color: rgba(255,255,255,.5);
+            line-height: 1.7; margin-bottom: 2rem; max-width: 480px; opacity: 0;
+        }
+        .hero-sub b { color: rgba(255,255,255,.85); font-weight: 500; }
+
+        .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; opacity: 0; }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: .5rem;
+            background: var(--accent); color: var(--white);
+            padding: .875rem 1.875rem; border-radius: 10px;
+            font-size: .95rem; font-weight: 600; text-decoration: none;
+            letter-spacing: .01em; transition: background .2s, transform .15s, box-shadow .25s;
+            box-shadow: 0 4px 20px rgba(26,111,255,.3);
+        }
+        .btn-primary:hover {
+            background: #1560e8; transform: translateY(-2px);
+            box-shadow: 0 10px 36px rgba(26,111,255,.45);
+        }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: .5rem;
+            background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.11);
+            color: var(--white); padding: .875rem 1.875rem; border-radius: 10px;
+            font-size: .95rem; font-weight: 500; text-decoration: none;
+            transition: background .2s, transform .15s;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,.11); transform: translateY(-2px); }
+
+        .hero-trust {
+            display: flex; align-items: center; gap: .75rem; margin-top: 2rem; opacity: 0;
+        }
+        .trust-avatars { display: flex; }
+        .trust-avatars span {
+            width: 34px; height: 34px; border-radius: 50%;
+            border: 2px solid var(--ink-2);
+            background: linear-gradient(135deg, #1a6fff, #00d4aa);
+            display: flex; align-items: center; justify-content: center;
+            font-size: .68rem; font-weight: 700; margin-left: -9px;
+        }
+        .trust-avatars span:first-child { margin-left: 0; }
+        .trust-text { font-size: .8rem; color: rgba(255,255,255,.4); }
+        .trust-text strong { color: rgba(255,255,255,.8); }
+
+        /* ─── HERO VISUAL ───────────────────────────────── */
+        .hero-visual {
+            position: relative; display: flex;
+            align-items: center; justify-content: center;
+            opacity: 0;
+        }
+
+        .card-stack { position: relative; width: clamp(260px,35vw,340px); height: clamp(360px,48vw,460px); }
+
+        .card-item {
+            position: absolute; border-radius: 18px; overflow: hidden;
+            box-shadow: 0 32px 80px rgba(0,0,0,.65);
+            transition: transform .4s ease;
+        }
+        .card-item-1 {
+            width: 56%; height: 65%;
+            left: 50%; top: 50%;
+            transform: translate(-85%, -55%) rotate(-13deg);
+            background: linear-gradient(145deg, #181b28, #0d1020);
+            border: 1px solid rgba(255,255,255,.1);
+        }
+        .card-item-2 {
+            width: 64%; height: 70%;
+            left: 50%; top: 50%;
+            transform: translate(-52%, -55%) rotate(4deg);
+            background: linear-gradient(145deg, #1e2338, #131828);
+            border: 1px solid rgba(26,111,255,.28); z-index: 2;
+        }
+        .card-item-3 {
+            width: 58%; height: 65%;
+            left: 50%; top: 50%;
+            transform: translate(-18%, -52%) rotate(17deg);
+            background: linear-gradient(145deg, #1a1d28, #0d1020);
+            border: 1px solid rgba(255,255,255,.07);
+        }
+        .card-inner { width: 100%; height: 100%; display: flex; flex-direction: column; }
+        .card-header {
+            padding: 10px 13px; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .card-set { font-size: .52rem; font-weight: 700; letter-spacing: .12em; color: rgba(255,255,255,.35); text-transform: uppercase; }
+        .card-num { font-size: .52rem; color: rgba(255,255,255,.25); font-family: var(--font-display); }
+        .card-art {
+            flex: 1; position: relative; overflow: hidden;
+            background: linear-gradient(160deg, #0e1a3a 0%, #0a1020 100%);
+        }
+        .card-art::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 40% 30%, rgba(26,111,255,.18), transparent 60%);
+        }
+        .card-art img {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: .55; mix-blend-mode: luminosity;
+        }
+        .card-art-geo {
+            position: absolute; inset: 0; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .card-art-geo svg { width: 75%; height: 75%; opacity: .6; }
+        .card-foil {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 30%, rgba(201,168,76,.09) 50%, transparent 70%);
+            animation: foil-shift 5s ease-in-out infinite alternate;
+        }
+        @keyframes foil-shift {
+            0% { background-position: 0% 0%; opacity: .6; }
+            100% { background-position: 100% 100%; opacity: 1; }
+        }
+        .card-footer { padding: 9px 13px; background: rgba(0,0,0,.35); }
+        .card-name { font-family: var(--font-display); font-size: .62rem; font-weight: 700; color: var(--white); letter-spacing: .05em; text-transform: uppercase; }
+        .card-type { font-size: .5rem; color: rgba(255,255,255,.3); margin-top: 1px; }
+
+        .verified-badge {
+            position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,212,170,.1); border: 1px solid rgba(0,212,170,.32);
+            border-radius: 100px; padding: .4rem 1rem;
+            font-size: .68rem; font-weight: 700; color: var(--accent-2);
+            display: flex; align-items: center; gap: .4rem;
+            white-space: nowrap; z-index: 10;
+            box-shadow: 0 0 20px rgba(0,212,170,.15);
+        }
+
+        .holo-ring {
+            position: absolute; width: 400px; height: 400px; border-radius: 50%;
+            border: 1px solid rgba(26,111,255,.07);
+            top: 50%; left: 50%; transform: translate(-50%, -62%);
+            animation: ring-rotate 20s linear infinite;
+        }
+        .holo-ring-2 {
+            position: absolute; width: 500px; height: 500px; border-radius: 50%;
+            border: 1px solid rgba(0,212,170,.04);
+            top: 50%; left: 50%; transform: translate(-50%, -62%);
+            animation: ring-rotate 30s linear infinite reverse;
+        }
+        @keyframes ring-rotate {
+            from { rotate: 0deg; }
+            to { rotate: 360deg; }
+        }
+
+        /* floating particles */
+        .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: var(--accent-2); opacity: 0;
+            animation: float-particle var(--dur, 6s) var(--delay, 0s) ease-in-out infinite;
+        }
+        @keyframes float-particle {
+            0% { transform: translateY(40px) scale(0); opacity: 0; }
+            30% { opacity: .4; }
+            70% { opacity: .15; }
+            100% { transform: translateY(-80px) scale(1); opacity: 0; }
+        }
+
+        /* ─── DIVIDER ────────────────────────────────────── */
+        .divider-bar {
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent);
+        }
+
+        /* ─── PROBLEM ────────────────────────────────────── */
+        .problem-wrap { width: 100%; background: var(--ink); padding: clamp(4rem,8vw,7rem) 0; }
+
+        .section-eyebrow {
+            font-size: .68rem; font-weight: 700; letter-spacing: .15em;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
+        }
+        .section-h2 {
+            font-family: var(--font-display); font-weight: 800;
+            font-size: clamp(1.8rem,3.5vw,3rem); letter-spacing: -.025em;
+            line-height: 1.1; margin-bottom: 1rem;
+        }
+        .section-h2 span { color: var(--accent); }
+        .section-lead {
+            font-size: clamp(.875rem,1.2vw,1rem); color: rgba(255,255,255,.48);
+            line-height: 1.7; max-width: 560px;
+        }
+
+        .problem-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem,5vw,5rem); align-items: center; margin-top: 4rem;
+        }
+
+        .problem-cards { display: flex; flex-direction: column; gap: .875rem; }
+
+        .problem-card {
+            background: var(--ink-2); border: 1px solid rgba(255,255,255,.05);
+            border-radius: 14px; padding: 1.25rem 1.5rem;
+            display: flex; gap: 1rem; align-items: flex-start;
+            transition: border-color .3s, transform .3s, box-shadow .3s;
+        }
+        .problem-card:hover {
+            border-color: rgba(232,64,64,.2); transform: translateX(4px);
+            box-shadow: -4px 0 20px rgba(232,64,64,.06);
+        }
+        .problem-icon {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: rgba(232,64,64,.1); border: 1px solid rgba(232,64,64,.18);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .problem-icon svg { width: 17px; height: 17px; stroke: var(--red); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .problem-card-text h4 { font-family: var(--font-display); font-size: .88rem; font-weight: 700; color: var(--white); margin-bottom: .25rem; }
+        .problem-card-text p { font-size: .8rem; color: rgba(255,255,255,.42); line-height: 1.55; }
+
+        /* problem visual with unsplash images */
+        .problem-visual { position: relative; }
+        .shield-graphic {
+            width: 100%; aspect-ratio: 1; max-width: 380px;
+            margin: 0 auto; position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .shield-bg {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, rgba(232,64,64,.07) 0%, transparent 70%);
+        }
+
+        /* scam news image collage */
+        .scam-collage {
+            position: relative; width: 100%; max-width: 360px; margin: 0 auto;
+        }
+        .scam-img-wrap {
+            border-radius: 16px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,.07);
+            box-shadow: 0 24px 60px rgba(0,0,0,.5);
+        }
+        .scam-img-wrap img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(40%) brightness(.7); display: block; }
+        .scam-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(232,64,64,.15));
+            border-radius: 16px;
+        }
+
+        .stat-pill {
+            position: absolute; background: var(--ink-2);
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 12px; padding: .75rem 1.25rem;
+            font-size: .78rem; font-weight: 600; white-space: nowrap;
+            backdrop-filter: blur(12px);
+        }
+        .stat-pill .stat-val {
+            font-family: var(--font-display); font-size: 1.5rem; font-weight: 800;
+            display: block; line-height: 1;
+        }
+        .stat-pill-1 { top: -10px; left: -20px; color: var(--red); }
+        .stat-pill-1 .stat-val { color: var(--red); }
+        .stat-pill-1 span { color: rgba(255,255,255,.35); font-weight: 400; font-size: .7rem; }
+        .stat-pill-2 { bottom: 10px; right: -20px; color: var(--accent-2); }
+        .stat-pill-2 .stat-val { color: var(--accent-2); }
+        .stat-pill-2 span { color: rgba(255,255,255,.35); font-weight: 400; font-size: .7rem; }
+
+        /* ─── HOW IT WORKS ───────────────────────────────── */
+        .how-wrap { width: 100%; background: var(--ink-2); padding: clamp(4rem,8vw,7rem) 0; }
+
+        .how-header { text-align: center; margin-bottom: 4rem; }
+        .how-header .section-lead { margin: 0 auto; }
+
+        .steps-row {
+            display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem;
+        }
+
+        .step-card {
+            background: var(--ink); border: 1px solid rgba(255,255,255,.055);
+            border-radius: 20px; padding: 2rem; position: relative; overflow: hidden;
+            transition: transform .3s, box-shadow .3s, border-color .3s;
+        }
+        .step-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+        .step-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+        .step-card-1::before { background: linear-gradient(90deg, var(--accent), #4d91ff); }
+        .step-card-2::before { background: linear-gradient(90deg, var(--accent-2), #00f0c0); }
+        .step-card-3::before { background: linear-gradient(90deg, var(--gold), #e8b84c); }
+        .step-card:hover.step-card-1 { border-color: rgba(26,111,255,.2); box-shadow: 0 24px 60px rgba(26,111,255,.08); }
+        .step-card:hover.step-card-2 { border-color: rgba(0,212,170,.2); box-shadow: 0 24px 60px rgba(0,212,170,.08); }
+        .step-card:hover.step-card-3 { border-color: rgba(201,168,76,.2); box-shadow: 0 24px 60px rgba(201,168,76,.08); }
+
+        .step-num {
+            font-family: var(--font-display); font-size: 3.5rem; font-weight: 800;
+            opacity: .05; position: absolute; top: .5rem; right: 1.25rem; line-height: 1;
+        }
+        .step-icon {
+            width: 50px; height: 50px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;
+        }
+        .step-icon-1 { background: rgba(26,111,255,.1); border: 1px solid rgba(26,111,255,.18); }
+        .step-icon-2 { background: rgba(0,212,170,.1); border: 1px solid rgba(0,212,170,.18); }
+        .step-icon-3 { background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.18); }
+        .step-icon svg { width: 22px; height: 22px; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+        .step-icon-1 svg { stroke: var(--accent); }
+        .step-icon-2 svg { stroke: var(--accent-2); }
+        .step-icon-3 svg { stroke: var(--gold); }
+        .step-card h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: .75rem; color: var(--white); }
+        .step-card p { font-size: .875rem; color: rgba(255,255,255,.42); line-height: 1.65; }
+
+        /* step connectors on desktop */
+        .steps-row { position: relative; }
+
+        /* ─── GUARANTEE ──────────────────────────────────── */
+        .guarantee-wrap { width: 100%; background: var(--ink); padding: clamp(4rem,8vw,7rem) 0; }
+
+        .guarantee-box {
+            background: linear-gradient(135deg, rgba(26,111,255,.06) 0%, rgba(0,212,170,.03) 100%);
+            border: 1px solid rgba(26,111,255,.14);
+            border-radius: 28px; padding: clamp(2rem,4vw,4rem);
+            display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(2rem,4vw,4rem);
+            align-items: center; position: relative; overflow: hidden;
+        }
+        .guarantee-box::before {
+            content: ''; position: absolute; top: -1px; left: 0; right: 0;
+            height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        }
+        .guarantee-deco {
+            position: absolute; top: 0; right: 0; width: 320px; height: 320px;
+            background: radial-gradient(circle, rgba(26,111,255,.07), transparent 70%);
+            pointer-events: none;
+        }
+
+        .guarantee-badge-large {
+            display: inline-flex; align-items: center; gap: .6rem;
+            background: rgba(0,212,170,.09); border: 1px solid rgba(0,212,170,.22);
+            border-radius: 100px; padding: .4rem 1rem;
+            font-size: .68rem; font-weight: 700; letter-spacing: .1em;
+            text-transform: uppercase; color: var(--accent-2); margin-bottom: 1.5rem;
+        }
+        .guarantee-h2 {
+            font-family: var(--font-display); font-weight: 800;
+            font-size: clamp(1.6rem,2.8vw,2.5rem); letter-spacing: -.025em;
+            line-height: 1.1; margin-bottom: 1rem;
+        }
+        .guarantee-lead { font-size: .95rem; color: rgba(255,255,255,.48); line-height: 1.7; margin-bottom: 2rem; }
+
+        .guarantee-features { display: flex; flex-direction: column; gap: .75rem; }
+        .guarantee-feature { display: flex; align-items: flex-start; gap: .75rem; }
+        .feature-check {
+            width: 20px; height: 20px; border-radius: 50%;
+            background: rgba(0,212,170,.13); border: 1px solid rgba(0,212,170,.28);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 2px;
+        }
+        .feature-check svg { width: 10px; height: 10px; stroke: var(--accent-2); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+        .guarantee-feature p { font-size: .875rem; color: rgba(255,255,255,.55); line-height: 1.5; }
+        .guarantee-feature p strong { color: var(--white); font-weight: 600; }
+
+        .coverage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .coverage-item {
+            background: var(--ink-2); border: 1px solid rgba(255,255,255,.055);
+            border-radius: 16px; padding: 1.5rem; text-align: center;
+            transition: transform .3s, border-color .3s;
+        }
+        .coverage-item:hover { transform: translateY(-4px); }
+        .ci-1:hover { border-color: rgba(26,111,255,.25); }
+        .ci-2:hover { border-color: rgba(0,212,170,.25); }
+        .ci-3:hover { border-color: rgba(201,168,76,.25); }
+        .ci-4:hover { border-color: rgba(123,94,167,.25); }
+        .coverage-icon { width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; margin: 0 auto .75rem; }
+        .coverage-icon svg { width: 20px; height: 20px; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+        .coverage-item h4 { font-family: var(--font-display); font-size: .85rem; font-weight: 700; color: var(--white); margin-bottom: .35rem; }
+        .coverage-item p { font-size: .75rem; color: rgba(255,255,255,.38); line-height: 1.5; }
+        .ci-1 .coverage-icon { background: rgba(26,111,255,.1); border: 1px solid rgba(26,111,255,.18); }
+        .ci-1 .coverage-icon svg { stroke: var(--accent); }
+        .ci-2 .coverage-icon { background: rgba(0,212,170,.1); border: 1px solid rgba(0,212,170,.18); }
+        .ci-2 .coverage-icon svg { stroke: var(--accent-2); }
+        .ci-3 .coverage-icon { background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.18); }
+        .ci-3 .coverage-icon svg { stroke: var(--gold); }
+        .ci-4 .coverage-icon { background: rgba(123,94,167,.1); border: 1px solid rgba(123,94,167,.18); }
+        .ci-4 .coverage-icon svg { stroke: var(--accent-3); }
+
+        /* ─── BENEFITS ───────────────────────────────────── */
+        .benefits-wrap { width: 100%; background: var(--ink-2); padding: clamp(4rem,8vw,7rem) 0; }
+
+        .benefits-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem,5vw,5rem); align-items: start; margin-top: 4rem;
+        }
+        .benefit-list { display: flex; flex-direction: column; gap: 2rem; }
+        .benefit-item {
+            display: flex; gap: 1.25rem; align-items: flex-start;
+            padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,.04);
+            transition: transform .3s;
+        }
+        .benefit-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .benefit-item:hover { transform: translateX(5px); }
+        .benefit-num {
+            font-family: var(--font-display); font-size: .63rem; font-weight: 800;
+            color: var(--accent); letter-spacing: .1em; padding: .25rem .6rem;
+            background: rgba(26,111,255,.1); border: 1px solid rgba(26,111,255,.18);
+            border-radius: 6px; flex-shrink: 0; margin-top: 3px;
+        }
+        .benefit-text h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: .4rem; }
+        .benefit-text p { font-size: .875rem; color: rgba(255,255,255,.42); line-height: 1.65; }
+
+        .benefits-visual-wrap { position: sticky; top: 90px; }
+
+        /* ─── DEMO IMAGE SECTION ─────────────────────────── */
+        .demo-img-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: 1.25rem;
+        }
+        .demo-img-tile {
+            border-radius: 12px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,.07);
+            position: relative;
+        }
+        .demo-img-tile img {
+            width: 100%; height: 100px; object-fit: cover;
+            filter: brightness(.6) saturate(.8);
+            display: block; transition: transform .5s;
+        }
+        .demo-img-tile:hover img { transform: scale(1.06); }
+        .demo-img-tile-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(7,9,15,.7), transparent);
+        }
+        .demo-img-tile-label {
+            position: absolute; bottom: 8px; left: 10px;
+            font-size: .58rem; font-weight: 700; letter-spacing: .08em;
+            text-transform: uppercase; color: rgba(255,255,255,.55);
+        }
+
+        .platform-card {
+            background: var(--ink); border: 1px solid rgba(255,255,255,.06);
+            border-radius: 22px; padding: 1.75rem; position: relative; overflow: hidden;
+        }
+        .platform-card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-3));
+        }
+        .platform-logos { display: grid; grid-template-columns: repeat(3,1fr); gap: .75rem; margin-bottom: 1.5rem; }
+        .platform-logo {
+            background: var(--ink-2); border: 1px solid rgba(255,255,255,.055);
+            border-radius: 10px; padding: .85rem; display: flex; flex-direction: column;
+            align-items: center; gap: .4rem; transition: border-color .2s, transform .2s;
+        }
+        .platform-logo:hover { border-color: rgba(255,255,255,.15); transform: translateY(-2px); }
+        .platform-logo svg { width: 22px; height: 22px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .platform-logo span { font-size: .58rem; font-weight: 600; color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: .08em; }
+
+        .platform-arrow {
+            display: flex; justify-content: center; align-items: center;
+            gap: .75rem; margin-bottom: 1.5rem;
+        }
+        .arrow-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(26,111,255,.35), transparent); }
+        .arrow-icon {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(26,111,255,.11); border: 1px solid rgba(26,111,255,.22);
+            display: flex; align-items: center; justify-content: center;
+            animation: bounce-down 2s ease-in-out infinite;
+        }
+        @keyframes bounce-down {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+        }
+        .arrow-icon svg { width: 14px; height: 14px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        .ct-logo-box {
+            background: linear-gradient(135deg, rgba(26,111,255,.1), rgba(0,212,170,.06));
+            border: 1px solid rgba(26,111,255,.18); border-radius: 14px; padding: 1.25rem; text-align: center;
+        }
+        .ct-logo-box-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--white); }
+        .ct-logo-box-name span { color: var(--accent); }
+        .ct-logo-box-tag { font-size: .68rem; color: rgba(255,255,255,.3); margin-top: .25rem; }
+
+        .protect-row { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,.04); }
+        .protect-item {
+            background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.05);
+            border-radius: 9px; padding: .7rem 1rem; display: flex;
+            justify-content: space-between; align-items: center; margin-bottom: .5rem;
+        }
+        .protect-item:last-child { margin-bottom: 0; }
+        .protect-label { font-size: .7rem; color: rgba(255,255,255,.38); }
+        .protect-val { font-size: .7rem; font-weight: 700; }
+        .pv-green { color: var(--accent-2); }
+        .pv-blue { color: var(--accent); }
+        .pv-gold { color: var(--gold); }
+
+        /* ─── SOCIAL PROOF ───────────────────────────────── */
+        .social-proof-wrap { width: 100%; background: var(--ink); padding: clamp(4rem,8vw,7rem) 0; overflow: hidden; }
+        .social-header { text-align: center; margin-bottom: 4rem; }
+        .social-header .section-lead { margin: 0 auto; }
+
+        .reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+        .review-card {
+            background: var(--ink-2); border: 1px solid rgba(255,255,255,.055);
+            border-radius: 18px; padding: 1.75rem;
+            transition: transform .3s, border-color .3s, box-shadow .3s;
+        }
+        .review-card:hover {
+            transform: translateY(-5px); border-color: rgba(26,111,255,.18);
+            box-shadow: 0 16px 48px rgba(0,0,0,.3);
+        }
+        .review-stars { display: flex; gap: 3px; margin-bottom: 1rem; }
+        .star-icon { width: 14px; height: 14px; fill: var(--gold); }
+        .review-text {
+            font-size: .875rem; color: rgba(255,255,255,.55); line-height: 1.65;
+            margin-bottom: 1.25rem; font-style: italic;
+        }
+        .review-author { display: flex; align-items: center; gap: .75rem; }
+        .author-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-size: .72rem; font-weight: 800; flex-shrink: 0;
+        }
+        .av-1 { background: linear-gradient(135deg,#1a6fff,#7b5ea7); }
+        .av-2 { background: linear-gradient(135deg,#00d4aa,#1a6fff); }
+        .av-3 { background: linear-gradient(135deg,#c9a84c,#e84040); }
+        .av-4 { background: linear-gradient(135deg,#7b5ea7,#00d4aa); }
+        .av-5 { background: linear-gradient(135deg,#1a6fff,#00d4aa); }
+        .av-6 { background: linear-gradient(135deg,#e84040,#c9a84c); }
+        .author-name { font-size: .85rem; font-weight: 600; color: var(--white); }
+        .author-handle { font-size: .7rem; color: rgba(255,255,255,.28); }
+        .review-platform { font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.18); margin-top: .35rem; }
+
+        /* ─── STATS BAR ──────────────────────────────────── */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(4,1fr); gap: 1px;
+            background: rgba(255,255,255,.05); border-radius: 20px; overflow: hidden;
+            margin-top: 4rem; border: 1px solid rgba(255,255,255,.055);
+        }
+        .stat-block { background: var(--ink-2); padding: 2rem; text-align: center; transition: background .3s; }
+        .stat-block:hover { background: var(--ink-3); }
+        .stat-block-val {
+            font-family: var(--font-display); font-size: 2.25rem; font-weight: 800;
+            color: var(--white); display: block; line-height: 1; margin-bottom: .35rem;
+        }
+        .stat-block-label { font-size: .76rem; color: rgba(255,255,255,.32); letter-spacing: .03em; }
+
+        /* ─── CTA ────────────────────────────────────────── */
+        .cta-wrap {
+            width: 100%;
+            background: linear-gradient(160deg, #0d1120 0%, #07090f 60%, #0e1525 100%);
+            padding: clamp(5rem,10vw,8rem) 0; position: relative; overflow: hidden;
+        }
+        .cta-deco-1 {
+            position: absolute; top: 50%; left: 8%; transform: translateY(-50%);
+            width: 450px; height: 450px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(26,111,255,.09), transparent 70%);
+            animation: breathe 6s ease-in-out infinite;
+        }
+        .cta-deco-2 {
+            position: absolute; top: 50%; right: 8%; transform: translateY(-50%);
+            width: 350px; height: 350px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,212,170,.07), transparent 70%);
+            animation: breathe 6s ease-in-out infinite 3s;
+        }
+        @keyframes breathe {
+            0%,100% { transform: translateY(-50%) scale(1); opacity: .8; }
+            50% { transform: translateY(-50%) scale(1.15); opacity: 1; }
+        }
+        .cta-inner { max-width: 700px; margin: 0 auto; text-align: center; padding: 0 clamp(1rem,5%,3rem); position: relative; }
+        .cta-h2 {
+            font-family: var(--font-display); font-weight: 800;
+            font-size: clamp(2.2rem,5vw,3.75rem); letter-spacing: -.03em;
+            line-height: 1.05; margin-bottom: 1.25rem;
+        }
+        .cta-h2 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cta-sub { font-size: 1rem; color: rgba(255,255,255,.42); line-height: 1.7; margin-bottom: 2.5rem; }
+        .cta-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .cta-guarantee-note {
+            font-size: .74rem; color: rgba(255,255,255,.22); margin-top: 1.25rem;
+            display: flex; align-items: center; justify-content: center; gap: .4rem;
+        }
+        .cta-guarantee-note svg { width: 12px; height: 12px; stroke: rgba(255,255,255,.28); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* ─── FOOTER ─────────────────────────────────────── */
+        footer {
+            background: var(--ink-2); border-top: 1px solid rgba(255,255,255,.045);
+            padding: clamp(2rem,4vw,3rem) clamp(1rem,5%,3rem);
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 1.5rem;
+        }
+        .footer-logo { display: flex; align-items: center; }
+        .footer-logo img { height: 44px; width: auto; max-width: 160px; object-fit: contain; }
+        .footer-logo-fallback { font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: var(--white); }
+        .footer-logo-fallback span { color: var(--accent); }
+        .footer-links { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+        .footer-links a { font-size: .78rem; color: rgba(255,255,255,.3); text-decoration: none; transition: color .2s; }
+        .footer-links a:hover { color: rgba(255,255,255,.7); }
+        .footer-copy { font-size: .72rem; color: rgba(255,255,255,.18); }
+
+        /* ─── SCROLL REVEAL BASE ─────────────────────────── */
+        .reveal { opacity: 0; transform: translateY(30px); }
+        .reveal-left { opacity: 0; transform: translateX(-30px); }
+        .reveal-right { opacity: 0; transform: translateX(30px); }
+        .reveal-scale { opacity: 0; transform: scale(.94); }
+
+        /* ─── PROGRESS BAR ───────────────────────────────── */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; z-index: 200;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            width: 0%; transition: width .1s linear;
+        }
+
+        /* ─── RESPONSIVE ─────────────────────────────────── */
+        @media (max-width: 1024px) {
+            .problem-grid { grid-template-columns: 1fr; }
+            .problem-visual { order: -1; max-width: 420px; margin: 0 auto; }
+            .benefits-visual-wrap { position: static; }
+        }
+
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+            .hero-sub { margin: 0 auto 2rem; }
+            .hero-actions { justify-content: center; }
+            .hero-trust { justify-content: center; }
+            .hero-visual { order: -1; }
+            .steps-row { grid-template-columns: 1fr; }
+            .guarantee-box { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .reviews-grid { grid-template-columns: 1fr 1fr; }
+            .stats-bar { grid-template-columns: 1fr 1fr; }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; }
+            #cursor-dot, #cursor-ring { display: none; }
+            body { cursor: auto; }
+        }
+
+        @media (max-width: 640px) {
+            .hero-h1 { font-size: 2.1rem; }
+            .reviews-grid { grid-template-columns: 1fr; }
+            .coverage-grid { grid-template-columns: 1fr 1fr; }
+            .stats-bar { grid-template-columns: 1fr 1fr; }
+            .stat-pill-1 { left: 0; }
+            .stat-pill-2 { right: 0; }
+            .hero-actions { flex-direction: column; width: 100%; }
+            .btn-primary, .btn-secondary { justify-content: center; width: 100%; }
+        }
+
+        @media (max-width: 400px) {
+            .coverage-grid { grid-template-columns: 1fr; }
+            .demo-img-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- scroll progress -->
+<div id="scroll-progress"></div>
+<!-- custom cursor -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- ─── NAV ─────────────────────────────────────────────── -->
+<nav id="main-nav">
+    <a href="#" class="nav-logo">
+        <img src="logo.png" alt="CardTrade"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="nav-logo-fallback" style="display:none">Card<span>Trade</span></span>
+    </a>
+    <div class="nav-links">
+        <a href="#how">How It Works</a>
+        <a href="#protection">Protection</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#" class="nav-cta">Get Protected</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+    <a href="#how">How It Works</a>
+    <a href="#protection">Protection</a>
+    <a href="#benefits">Benefits</a>
+    <a href="#" class="nav-cta">Get Protected</a>
+</div>
+
+<!-- ─── HERO ─────────────────────────────────────────────── -->
+<div class="hero-wrap">
+    <div class="hero-bg-gradient"></div>
+    <div class="particles" id="particles"></div>
+    <div class="hero-grid">
+        <div class="hero-content">
+            <div class="hero-badge" id="hero-badge">
+                <span class="badge-dot"></span>
+                Guaranteed Protection on Every Deal
+            </div>
+            <h1 class="hero-h1" data-splitting id="hero-h1">Don't Get Scammed &amp; Stop <span>Paying Fees.</span></h1>
+            <p class="hero-sub" id="hero-sub">Card Trade protects your social deals from start to finish. <b>Never send money blindly again.</b></p>
+            <div class="hero-actions" id="hero-actions">
+                <a href="#" class="btn-primary">
+                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Start a Protected Deal
+                </a>
+                <a href="#how" class="btn-secondary">
+                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    See How It Works
+                </a>
+            </div>
+            <div class="hero-trust" id="hero-trust">
+                <div class="trust-avatars">
+                    <span>JR</span><span>MK</span><span>TS</span><span>AL</span>
+                </div>
+                <p class="trust-text"><strong>2,400+ collectors</strong> trading safely</p>
+            </div>
+        </div>
+
+        <div class="hero-visual" id="hero-visual">
+            <div class="holo-ring"></div>
+            <div class="holo-ring-2"></div>
+            <div class="card-stack">
+                <!-- Card 1 -->
+                <div class="card-item card-item-1">
+                    <div class="card-inner">
+                        <div class="card-header"><span class="card-set">BASE SET</span><span class="card-num">#001/150</span></div>
+                        <div class="card-art">
+                            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=300&q=60&auto=format" alt="card art" onerror="this.style.display='none'">
+                            <div class="card-art-geo">
+                                <svg viewBox="0 0 100 120" fill="none"><polygon points="50,10 90,35 90,85 50,110 10,85 10,35" stroke="rgba(26,111,255,0.4)" stroke-width="1" fill="rgba(26,111,255,0.04)"/><circle cx="50" cy="60" r="15" stroke="rgba(201,168,76,0.3)" stroke-width="1" fill="rgba(201,168,76,0.05)"/></svg>
+                            </div>
+                            <div class="card-foil"></div>
+                        </div>
+                        <div class="card-footer"><div class="card-name">Holographic Rare</div><div class="card-type">Trading Card · Grade PSA 10</div></div>
+                    </div>
+                </div>
+                <!-- Card 2 (front) -->
+                <div class="card-item card-item-2">
+                    <div class="card-inner">
+                        <div class="card-header"><span class="card-set">PRISM HOLO</span><span class="card-num">#023/100</span></div>
+                        <div class="card-art">
+                            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&q=60&auto=format" alt="card art" onerror="this.style.display='none'">
+                            <div class="card-art-geo">
+                                <svg viewBox="0 0 100 120" fill="none"><rect x="20" y="15" width="60" height="90" rx="4" stroke="rgba(26,111,255,0.5)" stroke-width="1" fill="rgba(26,111,255,0.04)"/><circle cx="50" cy="52" r="12" stroke="rgba(201,168,76,0.4)" stroke-width="1.5" fill="rgba(201,168,76,0.06)"/></svg>
+                            </div>
+                            <div class="card-foil" style="background:linear-gradient(135deg,transparent 20%,rgba(201,168,76,0.12) 50%,transparent 80%)"></div>
+                        </div>
+                        <div class="card-footer"><div class="card-name">Prismatic Star</div><div class="card-type">Ultra Rare · BGS 9.5</div></div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="card-item card-item-3">
+                    <div class="card-inner">
+                        <div class="card-header"><span class="card-set">GOLD FOIL</span><span class="card-num">#007/50</span></div>
+                        <div class="card-art">
+                            <img src="https://images.unsplash.com/photo-1585399000684-d2f72660f092?w=300&q=60&auto=format" alt="card art" onerror="this.style.display='none'">
+                            <div class="card-art-geo">
+                                <svg viewBox="0 0 100 120" fill="none"><path d="M50 10 L85 40 L75 85 L25 85 L15 40 Z" stroke="rgba(201,168,76,0.4)" stroke-width="1" fill="rgba(201,168,76,0.04)"/><circle cx="50" cy="55" r="10" stroke="rgba(0,212,170,0.4)" stroke-width="1" fill="rgba(0,212,170,0.06)"/></svg>
+                            </div>
+                            <div class="card-foil" style="background:linear-gradient(135deg,transparent 20%,rgba(201,168,76,0.1) 50%,transparent 80%)"></div>
+                        </div>
+                        <div class="card-footer"><div class="card-name">Gold Secret Rare</div><div class="card-type">Secret Rare · Raw</div></div>
+                    </div>
+                </div>
+                <div class="verified-badge">
+                    <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:var(--accent-2);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Deal Verified &amp; Protected
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="divider-bar"></div>
+
+<!-- ─── PROBLEM ──────────────────────────────────────────── -->
+<div class="problem-wrap">
+    <div class="section-inner">
+        <div class="problem-grid">
+            <div>
+                <div class="section-eyebrow reveal">The Problem</div>
+                <h2 class="section-h2 reveal">Card deals get risky when <span>trust isn't clear.</span></h2>
+                <p class="section-lead reveal">Collectors avoid marketplaces because of high fees, but social deals bring on serious risk.</p>
+                <div class="problem-cards" style="margin-top:2.5rem">
+                    <div class="problem-card reveal">
+                        <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M3 20c0-4 4-7 9-7s9 3 9 7"/><line x1="18" y1="4" x2="22" y2="8"/><line x1="22" y1="4" x2="18" y2="8"/></svg></div>
+                        <div class="problem-card-text"><h4>You don't always know who you're dealing with</h4><p>Anonymous handles and no verification means anyone can claim to be a trusted trader.</p></div>
+                    </div>
+                    <div class="problem-card reveal">
+                        <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="5" y1="5" x2="19" y2="19"/></svg></div>
+                        <div class="problem-card-text"><h4>Vouches don't carry from platform to platform</h4><p>Reputation built in one Discord server or Facebook group means nothing elsewhere.</p></div>
+                    </div>
+                    <div class="problem-card reveal">
+                        <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M9 13h6"/><path d="M9 17h4"/><line x1="18" y1="10" x2="20" y2="8"/><line x1="20" y1="10" x2="18" y2="8"/></svg></div>
+                        <div class="problem-card-text"><h4>A post-it with a name and date can be easily faked</h4><p>Traditional verification methods are trivially bypassed by bad actors using cloned accounts.</p></div>
+                    </div>
+                    <div class="problem-card reveal">
+                        <div class="problem-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                        <div class="problem-card-text"><h4>Payments sent upfront are never guaranteed</h4><p>Once money leaves your account in a social deal, you have zero recourse if things go wrong.</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="problem-visual reveal-right">
+                <div class="scam-collage">
+                    <div class="scam-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&q=70&auto=format" alt="online fraud risk">
+                        <div class="scam-overlay"></div>
+                    </div>
+                    <div class="stat-pill stat-pill-1">
+                        <span class="stat-val" data-count="2.1">2.1</span>
+                        <span>B lost to card scams annually</span>
+                    </div>
+                    <div class="stat-pill stat-pill-2">
+                        <span class="stat-val">0%</span>
+                        <span>recourse on social deals</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── HOW IT WORKS ─────────────────────────────────────── -->
+<div class="how-wrap" id="how">
+    <div class="section-inner">
+        <div class="how-header">
+            <div class="section-eyebrow reveal">How It Works</div>
+            <h2 class="section-h2 reveal" style="text-align:center">Card Trade brings trust to <span>every deal</span></h2>
+            <p class="section-lead reveal" style="text-align:center">Verified identities, payments held until completion, and built-in scam protection reimbursement if something goes wrong. Keep buying and selling on social — just without the risk and without the fees.</p>
+        </div>
+        <div class="steps-row">
+            <div class="step-card step-card-1 reveal">
+                <span class="step-num">01</span>
+                <div class="step-icon step-icon-1">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 11l2 2 4-4"/></svg>
+                </div>
+                <h3>Verify Identities</h3>
+                <p>Both parties verify their real identity before any money moves. No more anonymous handles. Know exactly who you're dealing with on every trade.</p>
+            </div>
+            <div class="step-card step-card-2 reveal">
+                <span class="step-num">02</span>
+                <div class="step-icon step-icon-2">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M7 15h2"/><path d="M11 15h4"/></svg>
+                </div>
+                <h3>Secure the Payment</h3>
+                <p>Funds are held securely until the card is confirmed delivered and in the described condition. Never send money blindly into a stranger's account again.</p>
+            </div>
+            <div class="step-card step-card-3 reveal">
+                <span class="step-num">03</span>
+                <div class="step-icon step-icon-3">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                </div>
+                <h3>Deal Completed &amp; Protected</h3>
+                <p>Once delivery is confirmed, funds release automatically. If anything goes wrong, scam protection kicks in. Every deal is covered — no exceptions.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── GUARANTEE ────────────────────────────────────────── -->
+<div class="guarantee-wrap" id="protection">
+    <div class="section-inner">
+        <div class="guarantee-box reveal-scale">
+            <div class="guarantee-deco"></div>
+            <div>
+                <div class="guarantee-badge-large">
+                    <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:var(--accent-2);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Scam Protection Guarantee
+                </div>
+                <h2 class="guarantee-h2">Run the deal through Card Trade and you're protected.</h2>
+                <p class="guarantee-lead">Payments can be secured until delivery is confirmed, and if anything goes wrong, you're covered. Every deal includes scam protection, shipping coverage, and verified identities on both sides — so scammers can't slip through or create cloned accounts.</p>
+                <div class="guarantee-features">
+                    <div class="guarantee-feature"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Scam protection reimbursement</strong> — if fraud occurs, you're made whole</p></div>
+                    <div class="guarantee-feature"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Shipping insurance included</strong> — coverage if your card is lost or damaged in transit</p></div>
+                    <div class="guarantee-feature"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Verified identities on both sides</strong> — real people, real accountability</p></div>
+                    <div class="guarantee-feature"><div class="feature-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><p><strong>Zero cloned account risk</strong> — our verification eliminates impersonation</p></div>
+                </div>
+            </div>
+            <div>
+                <div class="coverage-grid">
+                    <div class="coverage-item ci-1">
+                        <div class="coverage-icon"><svg viewBox="0 0 24 24" stroke="var(--accent)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <h4>Trade Confidence</h4><p>Your deal is protected from start to finish</p>
+                    </div>
+                    <div class="coverage-item ci-2">
+                        <div class="coverage-icon"><svg viewBox="0 0 24 24" stroke="var(--accent-2)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg></div>
+                        <h4>Know Your Trader</h4><p>Verified users with real profiles and ratings</p>
+                    </div>
+                    <div class="coverage-item ci-3">
+                        <div class="coverage-icon"><svg viewBox="0 0 24 24" stroke="var(--gold)"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                        <h4>Skip the Fees</h4><p>Stop losing money to marketplace and PayPal fees</p>
+                    </div>
+                    <div class="coverage-item ci-4">
+                        <div class="coverage-icon"><svg viewBox="0 0 24 24" stroke="var(--accent-3)"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                        <h4>Deal Protected</h4><p>Scam protection and shipping insurance on every deal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── BENEFITS ─────────────────────────────────────────── -->
+<div class="benefits-wrap" id="benefits">
+    <div class="section-inner">
+        <div class="section-eyebrow reveal">Why Card Trade</div>
+        <h2 class="section-h2 reveal">Keep finding deals where <span>you already do.</span></h2>
+        <p class="section-lead reveal">Keep finding deals in Facebook groups, Instagram, and Discord. Card Trade isn't a marketplace — it's how you stay protected from scams.</p>
+        <div class="benefits-grid">
+            <div class="benefit-list">
+                <div class="benefit-item reveal">
+                    <span class="benefit-num">01</span>
+                    <div class="benefit-text"><h3>Trade with confidence</h3><p>Your deal is protected from start to finish. Verified counterparties, secured funds, and guaranteed resolution means you never have to hope for the best again.</p></div>
+                </div>
+                <div class="benefit-item reveal">
+                    <span class="benefit-num">02</span>
+                    <div class="benefit-text"><h3>Know who you're dealing with</h3><p>Verified users with real profiles and ratings that carry across every platform. No more anonymous handles or unverifiable vouches from strangers.</p></div>
+                </div>
+                <div class="benefit-item reveal">
+                    <span class="benefit-num">03</span>
+                    <div class="benefit-text"><h3>Skip the fees</h3><p>Stop losing money to marketplace and PayPal fees. Card Trade charges nothing compared to the 10–15% you're bleeding on traditional platforms.</p></div>
+                </div>
+                <div class="benefit-item reveal">
+                    <span class="benefit-num">04</span>
+                    <div class="benefit-text"><h3>Your deal is protected</h3><p>Scam protection and shipping insurance included on every single deal. No add-ons, no fine print. If something goes wrong, you are made whole.</p></div>
+                </div>
+            </div>
+            <div class="benefits-visual-wrap reveal-right">
+                <!-- Demo images from Unsplash -->
+                <div class="demo-img-grid">
+                    <div class="demo-img-tile">
+                        <img src="https://images.unsplash.com/photo-1612404730960-5c71577fca11?w=400&q=70&auto=format" alt="collector">
+                        <div class="demo-img-tile-overlay"></div>
+                        <div class="demo-img-tile-label">Facebook Groups</div>
+                    </div>
+                    <div class="demo-img-tile">
+                        <img src="https://images.unsplash.com/photo-1629749805982-eefce56e4012?w=400&q=70&auto=format" alt="trading cards">
+                        <div class="demo-img-tile-overlay"></div>
+                        <div class="demo-img-tile-label">Instagram DMs</div>
+                    </div>
+                    <div class="demo-img-tile">
+                        <img src="https://images.unsplash.com/photo-1605902711622-cfb43c4437b5?w=400&q=70&auto=format" alt="discord trading">
+                        <div class="demo-img-tile-overlay"></div>
+                        <div class="demo-img-tile-label">Discord Servers</div>
+                    </div>
+                    <div class="demo-img-tile">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&q=70&auto=format" alt="secure payment">
+                        <div class="demo-img-tile-overlay"></div>
+                        <div class="demo-img-tile-label">Secure Payments</div>
+                    </div>
+                </div>
+                <div class="platform-card">
+                    <p style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:1rem">Where you find deals</p>
+                    <div class="platform-logos">
+                        <div class="platform-logo">
+                            <svg viewBox="0 0 24 24" style="stroke:rgba(255,255,255,.5)"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                            <span>Facebook</span>
+                        </div>
+                        <div class="platform-logo">
+                            <svg viewBox="0 0 24 24" style="stroke:rgba(255,255,255,.5)"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                            <span>Instagram</span>
+                        </div>
+                        <div class="platform-logo">
+                            <svg viewBox="0 0 24 24" style="stroke:rgba(255,255,255,.5)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span>Discord</span>
+                        </div>
+                    </div>
+                    <div class="platform-arrow">
+                        <div class="arrow-line"></div>
+                        <div class="arrow-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+                        <div class="arrow-line"></div>
+                    </div>
+                    <div class="ct-logo-box">
+                        <div style="margin-bottom:.5rem"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:var(--accent-2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin:0 auto;display:block"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+                        <div class="ct-logo-box-name">Card<span>Trade</span></div>
+                        <div class="ct-logo-box-tag">Verify · Secure · Protect</div>
+                    </div>
+                    <div class="protect-row">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+                            <span style="font-size:.7rem;color:rgba(255,255,255,.28)">Protection status</span>
+                            <span style="font-size:.7rem;font-weight:700;color:var(--accent-2);display:flex;align-items:center;gap:.3rem"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent-2);display:inline-block;animation:pulse-dot 2s infinite"></span>Active</span>
+                        </div>
+                        <div class="protect-item"><div class="protect-label">Scam Protection</div><div class="protect-val pv-green">Guaranteed</div></div>
+                        <div class="protect-item"><div class="protect-label">Shipping Insurance</div><div class="protect-val pv-blue">Included</div></div>
+                        <div class="protect-item"><div class="protect-label">Marketplace Fees</div><div class="protect-val pv-gold">$0</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── SOCIAL PROOF ─────────────────────────────────────── -->
+<div class="social-proof-wrap">
+    <div class="section-inner">
+        <div class="social-header">
+            <div class="section-eyebrow reveal">The Hobby Loves Us</div>
+            <h2 class="section-h2 reveal" style="text-align:center">Collectors trust <span>Card Trade</span></h2>
+            <p class="section-lead reveal" style="text-align:center">From Facebook group flippers to high-end Discord traders — the collecting community has spoken.</p>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card reveal">
+                <div class="review-stars"><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <p class="review-text">"Finally a way to do social deals without the anxiety. I sold a graded Charizard for $1,400 last week and the whole process was completely stress-free."</p>
+                <div class="review-author"><div class="author-avatar av-1">JR</div><div><div class="author-name">Jake R.</div><div class="author-handle">@jakepokecollects</div><div class="review-platform">Facebook Groups</div></div></div>
+            </div>
+            <div class="review-card reveal">
+                <div class="review-stars"><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <p class="review-text">"I was about to send $800 to someone in Discord when a friend told me about Card Trade. It's the only way I do deals now. The verified profile system is a game-changer."</p>
+                <div class="review-author"><div class="author-avatar av-2">MK</div><div><div class="author-name">Marcus K.</div><div class="author-handle">@mkhobbycards</div><div class="review-platform">Discord</div></div></div>
+            </div>
+            <div class="review-card reveal">
+                <div class="review-stars"><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <p class="review-text">"Saved $240 in eBay fees on my last three deals alone. The protection is real — one deal had a shipping issue and Card Trade sorted it out completely."</p>
+                <div class="review-author"><div class="author-avatar av-3">TW</div><div><div class="author-name">Tanya W.</div><div class="author-handle">@tanyacardworld</div><div class="review-platform">Instagram</div></div></div>
+            </div>
+            <div class="review-card reveal">
+                <div class="review-stars"><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <p class="review-text">"Got scammed twice before finding Card Trade. Now I only do deals this way. The identity verification is thorough and legitimate. Scammers can't get past it."</p>
+                <div class="review-author"><div class="author-avatar av-4">AL</div><div><div class="author-name">Andre L.</div><div class="author-handle">@andresportscards</div><div class="review-platform">Facebook Groups</div></div></div>
+            </div>
+            <div class="review-card reveal">
+                <div class="review-stars"><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <p class="review-text">"The Facebook group deal scene has always been sketchy. Card Trade completely changes that. I've done 18 deals through it. Zero issues. Total peace of mind."</p>
+                <div class="review-author"><div class="author-avatar av-5">SR</div><div><div class="author-name">Sam R.</div><div class="author-handle">@samuelrarecard</div><div class="review-platform">Facebook Groups</div></div></div>
+            </div>
+            <div class="review-card reveal">
+                <div class="review-stars"><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <p class="review-text">"As a seller, the escrow system means buyers trust me more and I close deals faster. My conversion rate on Instagram DMs went through the roof after using Card Trade."</p>
+                <div class="review-author"><div class="author-avatar av-6">KP</div><div><div class="author-name">Kim P.</div><div class="author-handle">@kimpremiumcards</div><div class="review-platform">Instagram</div></div></div>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-block">
+                <span class="stat-block-val" data-count-target="0" data-prefix="$">$0</span>
+                <span class="stat-block-label">Marketplace fees charged</span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-block-val" data-count-target="100" data-suffix="%">100%</span>
+                <span class="stat-block-label">Scam claims resolved</span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-block-val" data-count-target="2400" data-suffix="+" data-format>2.4K+</span>
+                <span class="stat-block-label">Protected deals completed</span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-block-val" data-count-target="4.9">4.9</span>
+                <span class="stat-block-label">Average user rating</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── CTA ──────────────────────────────────────────────── -->
+<div class="cta-wrap">
+    <div class="cta-deco-1"></div>
+    <div class="cta-deco-2"></div>
+    <div class="cta-inner">
+        <div class="hero-badge" style="margin:0 auto 2rem;display:inline-flex;opacity:1">
+            <span class="badge-dot"></span>
+            No Marketplace. No Fees. Just Protection.
+        </div>
+        <h2 class="cta-h2 reveal">Trade with confidence. <span>Not risk.</span></h2>
+        <p class="cta-sub reveal">Keep making deals where you already do — just with verified users, secure payments, and built-in protection. Card Trade isn't a marketplace. It's how the hobby stays safe.</p>
+        <div class="cta-actions reveal">
+            <a href="#" class="btn-primary" style="font-size:1rem;padding:1rem 2rem">
+                <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Start a Protected Deal
+            </a>
+            <a href="#how" class="btn-secondary" style="font-size:1rem;padding:1rem 2rem">Learn How It Works</a>
+        </div>
+        <p class="cta-guarantee-note">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Guaranteed scam protection on every deal. No exceptions.
+        </p>
+    </div>
+</div>
+
+<!-- ─── FOOTER ───────────────────────────────────────────── -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-logo">
+            <img src="logo.png" alt="CardTrade"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <span class="footer-logo-fallback" style="display:none">Card<span>Trade</span></span>
+        </div>
+        <div class="footer-links">
+            <a href="#">How It Works</a>
+            <a href="#">Protection</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact</a>
+        </div>
+        <p class="footer-copy">© 2026 Card Trade. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- ─── JS ───────────────────────────────────────────────── -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── cursor ── */
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+function animateCursor() {
+    dot.style.left = mouseX + 'px'; dot.style.top = mouseY + 'px';
+    ringX += (mouseX - ringX) * .12; ringY += (mouseY - ringY) * .12;
+    ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+/* ── scroll progress ── */
+const prog = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    prog.style.width = pct + '%';
+}, { passive: true });
+
+/* ── nav scroll style ── */
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── hamburger ── */
+const hb = document.getElementById('hamburger');
+const mm = document.getElementById('mobile-menu');
+hb.addEventListener('click', () => {
+    hb.classList.toggle('open');
+    mm.classList.toggle('open');
+});
+mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hb.classList.remove('open'); mm.classList.remove('open');
+}));
+
+/* ── floating particles ── */
+const pContainer = document.getElementById('particles');
+for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        bottom:${Math.random()*40}%;
+        background:${Math.random()>.5 ? 'rgba(26,111,255,.6)' : 'rgba(0,212,170,.5)'};
+        --dur:${5+Math.random()*8}s;
+        --delay:${Math.random()*6}s;
+    `;
+    pContainer.appendChild(p);
+}
+
+/* ── HERO entrance (GSAP) ── */
+const heroTl = gsap.timeline({ delay: .2 });
+heroTl
+    .to('#hero-badge',     { opacity:1, y:0, duration:.6, ease:'power3.out' })
+    .to('#hero-h1',        { opacity:1, y:0, duration:.7, ease:'power3.out' }, '-=.3')
+    .to('#hero-sub',       { opacity:1, y:0, duration:.6, ease:'power3.out' }, '-=.4')
+    .to('#hero-actions',   { opacity:1, y:0, duration:.6, ease:'power3.out' }, '-=.35')
+    .to('#hero-trust',     { opacity:1, y:0, duration:.5, ease:'power3.out' }, '-=.3')
+    .to('#hero-visual',    { opacity:1, y:0, duration:.8, ease:'power3.out' }, '-=.6');
+
+/* card float animation */
+gsap.to('.card-item-1', { y: -8, rotation: -14, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+gsap.to('.card-item-2', { y: -12, rotation: 3, duration: 4, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: .5 });
+gsap.to('.card-item-3', { y: -6, rotation: 18, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1 });
+
+/* ── generic scroll reveals ── */
+const revealItems = (selector, vars = {}) => {
+    gsap.utils.toArray(selector).forEach((el, i) => {
+        gsap.to(el, {
+            ...{ opacity:1, y:0, x:0, scale:1, duration:.7, ease:'power3.out', delay: i * .08 },
+            ...vars,
+            scrollTrigger: {
+                trigger: el, start: 'top 90%', toggleActions: 'play none none none'
+            }
+        });
+    });
+};
+
+revealItems('.reveal');
+revealItems('.reveal-left', { x: 0 });
+revealItems('.reveal-right', { x: 0 });
+revealItems('.reveal-scale', { scale: 1 });
+
+/* ── animated stat counters ── */
+const statEls = document.querySelectorAll('.stat-block-val[data-count-target]');
+const countObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        countObserver.unobserve(entry.target);
+        const el = entry.target;
+        const target = parseFloat(el.dataset.countTarget);
+        const suffix = el.dataset.suffix || '';
+        const prefix = el.dataset.prefix || '';
+        const isFormat = el.dataset.format !== undefined;
+        const decimals = target % 1 !== 0 ? 1 : 0;
+        gsap.fromTo({val: 0}, {val: 0}, {
+            val: target, duration: 2.2, ease: 'power2.out',
+            onUpdate: function() {
+                const v = this.targets()[0].val;
+                if (isFormat) {
+                    el.textContent = prefix + (v >= 1000 ? (v/1000).toFixed(1)+'K' : Math.round(v)) + suffix;
+                } else {
+                    el.textContent = prefix + v.toFixed(decimals) + suffix;
+                }
+            }
+        });
+    });
+}, { threshold: .3 });
+statEls.forEach(el => countObserver.observe(el));
+
+/* ── step cards stagger ── */
+gsap.utils.toArray('.step-card').forEach((card, i) => {
+    gsap.from(card, {
+        opacity: 0, y: 40, duration: .7, ease: 'power3.out', delay: i * .15,
+        scrollTrigger: { trigger: card, start: 'top 88%' }
+    });
+});
+
+/* ── review cards stagger ── */
+gsap.utils.toArray('.review-card').forEach((card, i) => {
+    gsap.from(card, {
+        opacity: 0, y: 30, duration: .6, ease: 'power2.out', delay: i * .1,
+        scrollTrigger: { trigger: card, start: 'top 90%' }
+    });
+});
+
+/* ── benefit items stagger ── */
+gsap.utils.toArray('.benefit-item').forEach((item, i) => {
+    gsap.from(item, {
+        opacity: 0, x: -30, duration: .6, ease: 'power2.out', delay: i * .1,
+        scrollTrigger: { trigger: item, start: 'top 88%' }
+    });
+});
+
+/* ── coverage items ── */
+gsap.utils.toArray('.coverage-item').forEach((item, i) => {
+    gsap.from(item, {
+        opacity: 0, scale: .9, duration: .5, ease: 'back.out(1.4)', delay: i * .1,
+        scrollTrigger: { trigger: item, start: 'top 88%' }
+    });
+});
+
+/* ── problem cards ── */
+gsap.utils.toArray('.problem-card').forEach((card, i) => {
+    gsap.from(card, {
+        opacity: 0, x: -20, duration: .5, ease: 'power2.out', delay: i * .1,
+        scrollTrigger: { trigger: card, start: 'top 90%' }
+    });
+});
+
+/* ── stat bar counter animation from GSAP ── */
+gsap.utils.toArray('.stat-block').forEach((block, i) => {
+    gsap.from(block, {
+        opacity: 0, y: 20, duration: .5, ease: 'power2.out', delay: i * .1,
+        scrollTrigger: { trigger: block, start: 'top 85%' }
+    });
+});
+
+/* ── parallax on hero visual ── */
+gsap.to('.card-stack', {
+    yPercent: 15,
+    ease: 'none',
+    scrollTrigger: { trigger: '.hero-wrap', start: 'top top', end: 'bottom top', scrub: 1 }
+});
+
+/* ── magnetic buttons ── */
+document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top - r.height/2;
+        gsap.to(btn, { x: x*.2, y: y*.2, duration: .3, ease: 'power2.out' });
+    });
+    btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: .5, ease: 'elastic.out(1,.4)' });
+    });
+});
+
+/* ── glowing background on mouse (hero) ── */
+const heroBg = document.querySelector('.hero-bg-gradient');
+document.querySelector('.hero-wrap')?.addEventListener('mousemove', e => {
+    const pct = (e.clientX / window.innerWidth) * 100;
+    heroBg.style.background = `
+        radial-gradient(ellipse 60% 50% at ${pct}% 35%, rgba(26,111,255,.14) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at ${100-pct}% 70%, rgba(0,212,170,.08) 0%, transparent 60%),
+        linear-gradient(160deg, #0d1120 0%, #07090f 50%, #0e1525 100%)
+    `;
+}, { passive: true });
+</script>
+</body>
+</html>
